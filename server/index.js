@@ -3,7 +3,7 @@ const app = express();
 
 app.get('/', (req, res) => {
     res.send({
-        massage: 'TEST ROOT ROUTE!'
+        massage: 'TEST ROOT ROUTE!!'
     })
 });
 
