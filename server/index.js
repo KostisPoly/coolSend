@@ -3,13 +3,13 @@ const mongoose=require('mongoose');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 const app = express();
+require('dotenv').config({path: './config.env'});
 require('./models/User');
 require('./services/passport');
 const authRoutes= require('./routes/authRoutes');
-const keys = require('./keys');
 
 
-mongoose.connect(keys.mongoURI, {useNewUrlParser: true,useUnifiedTopology: true})
+mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true,useUnifiedTopology: true})
     .then( () => {
         console.log('Connected to mongo ');
     });
@@ -18,7 +18,7 @@ mongoose.connect(keys.mongoURI, {useNewUrlParser: true,useUnifiedTopology: true}
 app.use(
     cookieSession({
         maxAge: 30 * 24 * 60 * 60 * 1000,
-        keys: [keys.cookieSecret]
+        keys: [process.env.COOKIE_KEY]
     })
 );
 app.use(passport.initialize());
