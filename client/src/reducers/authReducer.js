@@ -3,7 +3,9 @@ const  initialState = {
     authenticated: null
 }
 
-export default function (state = initialState, action) {
+export default function auth(state = initialState, action) {
+    
+    console.log(action);
     switch(action.type) {
         default:
             return state;
