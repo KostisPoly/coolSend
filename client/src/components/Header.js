@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { AppBar, Button, Toolbar, Typography, Avatar } from "@material-ui/core"
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import ProductDisplay from './Payments';
 
 class Header extends Component {
     renderContent() {
@@ -27,6 +28,7 @@ class Header extends Component {
                         </Link>
                     </Typography>
                     {this.renderContent()}
+                    <ProductDisplay />
                 </Toolbar>
             </AppBar>
         )
