@@ -6,9 +6,12 @@ const bodyParser = require('body-parser');
 const app = express();
 require('dotenv').config({path: './config.env'});
 require('./models/User');
+require('./models/Recipient');
+require('./models/Campaign');
 require('./services/passport');
-const authRoutes= require('./routes/authRoutes');
-const billingRoutes= require('./routes/billingRoutes');
+const authRoutes = require('./routes/authRoutes');
+const billingRoutes = require('./routes/billingRoutes');
+const campaignRoutes = require('./routes/campaignRoutes');
 
 
 mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true,useUnifiedTopology: true})
@@ -30,6 +33,7 @@ app.use(passport.session());
 
 authRoutes(app);
 billingRoutes(app);
+campaignRoutes(app);
 
 app.get('/', (req, res) => {
     res.send({message: 'Test route!'});
