@@ -1,27 +1,43 @@
 const mongoose = require('mongoose');
 const recipientSchema = require('../models/Recipient');
+const Mailer = require('../services/Mailer');
+const linkTemplate = require('../services/emailTemplates/linkTemplate');
 
 const Campaign = mongoose.model('campaign');
 
 module.exports = app => {
-    app.post('/api/campaign', (req, res) => {
+    app.post('/api/campaign', async (req, res) => {
         
         if(req.user){
 
-            if(req.user.credits > 1) {
-
-                const { title, subject, body, recipients, feedback } = req.body;
+            const { title, subject, body, recipients, feedback } = req.body;
+            
+            if(req.user.credits > recipients.split(",").length) {    
                 
                 const campaign = new Campaign({
                     title,
                     subject,
                     body,
                     //recipients from req are comma separated values -- to objects( trim whitespace? )
-                    recipients: recipient.split(',').map(email => ({ email: email.trim() })),
+                    recipients: recipients.split(',').map(email => ({ email: email.trim() })),
                     feedback,
                     _user: req.user.id,
                     dateSent: Date.now()
                 });
+
+                //MAYBE SWITCH LOGIC FOR TEMPLATE BASED ON FEEDBACK TYPE
+                const mailer = new Mailer(campaign, linkTemplate(campaign));
+                
+                try {
+                    await mailer.send();
+                    //After send save campaign and user minus credits to mongodb
+                    await campaign.save();
+                    req.user.credits -= 1;
+                    const user = await req.user.save();
+                    res.send(user);
+                } catch(err) {
+                    res.status(422).send(err);
+                }    
 
             } else {
                 return res.status(403).send({ error: 'Not enough credits!' });
