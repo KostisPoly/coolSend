@@ -53,11 +53,6 @@ class ProductDisplay extends Component {
             <p> Selected {this.state.quantity}</p>
             
             </div>
-            // <section>
-            //     <button type="button" id="checkout-button" role="link" onClick={this.handleClick}>
-            //         Buy Credits
-            //     </button>
-            // </section>
             
         );
     }

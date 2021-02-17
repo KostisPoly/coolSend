@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { AppBar, Button, Toolbar, Typography, Avatar } from "@material-ui/core"
+import { AppBar, Button, Toolbar, Typography, Avatar, Grid } from "@material-ui/core"
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import ProductDisplay from './Payments';
@@ -13,7 +13,13 @@ class Header extends Component {
             case false:
                 return <Button href="/auth/google">Login with Google</Button>;
             default:
-                return <Avatar alt="user avatar" src=""></Avatar>
+                return (
+                    <Grid item container xs direction="row" justify="flex-end">
+                        <Avatar alt="user avatar" src=""></Avatar>
+                        <ProductDisplay />
+                    </Grid>
+                )
+
         }
     }
     render() {
@@ -22,13 +28,15 @@ class Header extends Component {
         return (
             <AppBar position="static">
                 <Toolbar>
-                    <Typography variant="h4">
-                        <Link to={this.props.auth ? '/success' : '/'}>
-                            CoolSend
-                        </Link>
-                    </Typography>
-                    {this.renderContent()}
-                    <ProductDisplay />
+                    <Grid container item xs direction="row" justify="space-evenly">
+                        <Typography variant="h4">
+                            <Link to={this.props.auth ? '/success' : '/'}>
+                                CoolSend
+                            </Link>
+                        </Typography>
+                        {this.renderContent()}
+                    </Grid>
+                    
                 </Toolbar>
             </AppBar>
         )
