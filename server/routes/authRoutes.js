@@ -10,7 +10,7 @@ module.exports = app => {
     );
 
     app.get('/failed', (req, res) => res.send('failed google redirect'))
-    app.get('/success', (req, res) => res.send('success redirect'))
+    app.get('/success', (req, res) => res.redirect('/dashboard'))
 
     app.get('/auth/google/callback', passport.authenticate('google', {failureRedirect: '/failed'}),
     (req, res) => {

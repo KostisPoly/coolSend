@@ -14,7 +14,7 @@ class Header extends Component {
                 return <Button href="/auth/google">Login with Google</Button>;
             default:
                 return (
-                    <Grid item container xs direction="row" justify="flex-end">
+                    <Grid item container xs={4} direction="row" justify="space-around">
                         <Avatar alt="user avatar" src=""></Avatar>
                         <ProductDisplay />
                     </Grid>
@@ -30,7 +30,7 @@ class Header extends Component {
                 <Toolbar>
                     <Grid container item xs direction="row" justify="space-evenly">
                         <Typography variant="h4">
-                            <Link to={this.props.auth ? '/success' : '/'}>
+                            <Link to={this.props.auth ? '/dashboard' : '/'} style={{ textDecoration: 'none' }}>
                                 CoolSend
                             </Link>
                         </Typography>
