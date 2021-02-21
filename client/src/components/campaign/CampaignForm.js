@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
 import { reduxForm, Field } from 'redux-form'
 import CampaignField from './CampaignField'
+import CampaignBody from './CampaignBody'
 import validateEmails from '../../validateEmails'
 
 class CampaignForm extends Component {
@@ -44,13 +45,14 @@ class CampaignForm extends Component {
                         placeholder="Email addresses comma separated!"
                         component={CampaignField}
                     />
-                    <Field 
+                    {/* <Field 
                         type="text"
                         name="body"
                         label="Email Body"
                         placeholder="Email Body!!"
                         component={CampaignField}
-                    />
+                    /> */}
+                    <CampaignBody />
                     <Grid container item xs direction="row" justify="space-evenly">
                         <Link to="/dashboard" style={{ textDecoration: 'none' }}>
                             <Button variant="outlined" color="secondary">Cancel</Button>
