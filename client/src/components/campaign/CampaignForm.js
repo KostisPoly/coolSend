@@ -1,7 +1,7 @@
 import { Button, Grid } from '@material-ui/core'
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom';
-import { reduxForm, Field } from 'redux-form'
+import { Link, useHistory } from 'react-router-dom';
+import { reduxForm, Field, formValues } from 'redux-form'
 import CampaignField from './CampaignField'
 import CampaignBody from './CampaignBody'
 import validateEmails from '../../validateEmails'
@@ -15,17 +15,35 @@ class CampaignForm extends Component {
         super(props);
         this.state ={ selectTemp: ''};
         this.onChangeValue = this.onChangeValue.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
     }
     onChangeValue(event) {
         console.log(event.target.value);
         this.setState({ selectTemp: event.target.value});
         this.props.fetchTemplate(event.target.value);
     }
+    onSubmit(e){
+        
+        let formData = {};
+        formData.recipients = e.emails;
+        formData.title = e.title;
+        formData.subject = e.subject;
+        formData.body = e.template;
+        formData.feedback = this.selectTemplate.value;
+
+        
+        this.props.submitCampaign(formData);
+        
+    }
+
+    
 
     render() {
+        const {handleSubmit} = this.props;
+        console.log(this.props);
         return (
             <div>
-                <form onSubmit={this.props.handleSubmit(val => console.log(val))}>
+                <form onSubmit={handleSubmit(this.onSubmit)}>
                     <Field 
                         type="text"
                         name="title"
@@ -48,7 +66,7 @@ class CampaignForm extends Component {
                         component={CampaignField}
                     />
 
-                    <select id="template" onChange={this.onChangeValue} value={this.state.value}>
+                    <select id="template" onChange={this.onChangeValue} value={this.state.value} ref={ref => this.selectTemplate = ref}>
                         <option></option>
                         <option value="link" key="link">Link Template</option>
                         <option value="rate" key="rate">Rate Template</option>
@@ -60,7 +78,12 @@ class CampaignForm extends Component {
                         <Link to="/dashboard" style={{ textDecoration: 'none' }}>
                             <Button variant="outlined" color="secondary">Cancel</Button>
                         </Link>
-                        <Button type="submit" variant="outlined" color="primary">Submit</Button>
+                        <Button 
+                            type="submit"
+                            variant="outlined"
+                            color="primary"
+                            
+                            >Submit</Button>
                     </Grid>
                     
                 </form>

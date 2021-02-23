@@ -1,8 +1,14 @@
 import React, { Component } from 'react'
 import CampaignForm from './CampaignForm'
+import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 
-export default class CampaignNew extends Component {
+class CampaignNew extends Component {
     render() {
+        console.log(this.props);
+        if(this.props.redirect.redirectTo){
+            return <Redirect to={this.props.redirect.redirectTo}/>
+        }
         return (
             <div>
                 <CampaignForm />
@@ -10,3 +16,8 @@ export default class CampaignNew extends Component {
         )
     }
 }
+
+function mapStateToProps(state) {
+    return { redirect: state.redirect }
+}
+export default connect(mapStateToProps)(CampaignNew);

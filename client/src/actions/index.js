@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { FETCH_USER, FETCH_TEMPLATE } from './types'
+import { FETCH_USER, FETCH_TEMPLATE, REDIRECT } from './types'
 
 export const fetchUser = () => {
     return function (dispatch) {
@@ -16,3 +16,20 @@ export const fetchTemplate = (template) => {
         }
     
 }
+
+export const submitCampaign = (values) => {
+    return function (dispatch) {
+        axios.post('/api/campaign', values)
+            .then(res => {
+                dispatch({ type: FETCH_USER, payload: res.data})
+                dispatch(redirect('/dashboard'))
+            })
+
+    }
+}
+
+// action creators
+export const redirect = link => {
+    console.log("=== REDIRECT ACTION DISPATCHED ===");
+    return { type: REDIRECT, payload: link };
+};

@@ -13,7 +13,7 @@ module.exports = app => {
         if(req.user){
 
             const { title, subject, body, recipients, feedback } = req.body;
-            
+            // console.log(title, subject, body, recipients, feedback);
             if(req.user.credits > recipients.split(",").length) {    
                 
                 const campaign = new Campaign({
