@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 const recipientSchema = require('../models/Recipient');
 const Mailer = require('../services/Mailer');
 const linkTemplate = require('../services/emailTemplates/linkTemplate');
+const commentTemplate = require('../services/emailTemplates/commentTemplate');
+const rateTemplate = require('../services/emailTemplates/rateTemplate');
 
 const Campaign = mongoose.model('campaign');
 
@@ -45,5 +47,23 @@ module.exports = app => {
         } else {
             return res.status(401).send({ error: 'No logged in user!' });
         }
+    })
+
+    app.get('/api/pick_template', (req, res) => {
+        console.log(req.query.template);
+        let template = '';
+        switch (req.query.template) {
+            case 'rate':
+                template = rateTemplate('toClient');
+                break;
+            case 'comment':
+                template = commentTemplate('toClient');
+                break;
+            default:
+                template = linkTemplate('toClient');
+                break;
+        }
+
+        res.send({ template });
     })
 }

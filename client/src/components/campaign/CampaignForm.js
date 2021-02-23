@@ -6,19 +6,21 @@ import CampaignField from './CampaignField'
 import CampaignBody from './CampaignBody'
 import validateEmails from '../../validateEmails'
 
-class CampaignForm extends Component {
-    // renderContent() {
-    //     switch (this.state.template) {
-    //         case 'link':
-    //             return (
-    //                 <div>
+import { connect } from 'react-redux'
+import * as actions from '../../actions'
 
-    //                 </div>
-    //             );
-    //         default:
-    //             return ;
-    //     }
-    // }
+class CampaignForm extends Component {
+    
+    constructor(props) {
+        super(props);
+        this.state ={ selectTemp: ''};
+        this.onChangeValue = this.onChangeValue.bind(this);
+    }
+    onChangeValue(event) {
+        console.log(event.target.value);
+        this.setState({ selectTemp: event.target.value});
+        this.props.fetchTemplate(event.target.value);
+    }
 
     render() {
         return (
@@ -45,14 +47,15 @@ class CampaignForm extends Component {
                         placeholder="Email addresses comma separated!"
                         component={CampaignField}
                     />
-                    {/* <Field 
-                        type="text"
-                        name="body"
-                        label="Email Body"
-                        placeholder="Email Body!!"
-                        component={CampaignField}
-                    /> */}
-                    <CampaignBody />
+
+                    <select id="template" onChange={this.onChangeValue} value={this.state.value}>
+                        <option></option>
+                        <option value="link" key="link">Link Template</option>
+                        <option value="rate" key="rate">Rate Template</option>
+                        <option value="comment" key="comment">Comment Template</option>
+                    </select>
+                    
+                    <CampaignBody/>
                     <Grid container item xs direction="row" justify="space-evenly">
                         <Link to="/dashboard" style={{ textDecoration: 'none' }}>
                             <Button variant="outlined" color="secondary">Cancel</Button>
@@ -87,7 +90,19 @@ function validate(params) {
     return errors;//IF EMPTY OBJECT REDUXFORM PASSES VALIDATION
 }
 
-export default reduxForm({
+const mapStateToProps = (state) => ({
+    initialValues: state.template
+});
+
+// export default reduxForm({
+//     validate,
+//     form: 'campaignForm'
+// })(CampaignForm);
+
+export default connect(
+    mapStateToProps, actions
+)(reduxForm({
     validate,
-    form: 'campaignForm'
-})(CampaignForm);
+    form: 'campaignForm',
+    enableReinitialize: true
+})(CampaignForm))
