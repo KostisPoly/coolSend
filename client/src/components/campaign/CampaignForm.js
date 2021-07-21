@@ -117,11 +117,6 @@ const mapStateToProps = (state) => ({
     initialValues: state.template
 });
 
-// export default reduxForm({
-//     validate,
-//     form: 'campaignForm'
-// })(CampaignForm);
-
 export default connect(
     mapStateToProps, actions
 )(reduxForm({
