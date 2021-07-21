@@ -7,7 +7,7 @@ class Mailer extends helper.Mail {
         
         //THIS methods refer to original sendgrid helper mail class
         this.sgApi = sendgrid(process.env.SENDGRID_API_KEY);
-        this.from_email = new helper.Email('kostis.polymeropoulos@gmail.com');
+        this.from_email = new helper.Email(process.env.FROM_EMAIL);
         this.subject = campaign.subject;
         this.body = new helper.Content('text/html', content);
         this.recipients = this.formatAddresses(campaign.recipients);
